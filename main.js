@@ -67,15 +67,22 @@ salvarTarefas();
 // Limpa tarefas concluídas com mais de 24h ao clicar em "Limpar Tarefas"
 $('#task-form').on('reset', function (e) {
 e.preventDefault();
-alert('Atenção: Só é possível excluir tarefas concluídas após 24 horas da conclusão.');
 const agora = Date.now();
+let encontrouParaExcluir = false;
+
 $('#completed-tasks tbody tr').each(function () {
 const tdData = $(this).find('td:last');
 const dataHora = Number(tdData.data('datahora')) || 0;
 if (agora - dataHora > 24 * 60 * 60 * 1000) {
 $(this).remove();
+encontrouParaExcluir = true;
 }
 });
+
+if (!encontrouParaExcluir) {
+alert('Atenção: Só é possível excluir tarefas concluídas após 24 horas da conclusão.');
+}
+
 salvarConcluidas();
 });
 
